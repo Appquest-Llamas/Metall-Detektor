@@ -21,6 +21,7 @@ public class Display_SensorData_Activity extends Activity implements SensorEvent
 	public TextView tvSensorData;
 	public ProgressBar pbSensorData;
 	SensorManager sm;
+	Sensor magnetsensor;
 	private static final int SCAN_QR_CODE_REQUEST_CODE = 0;
 	
 	@Override
@@ -29,9 +30,10 @@ public class Display_SensorData_Activity extends Activity implements SensorEvent
 		setContentView(R.layout.activity_display__sensor_data_);
 		tvSensorData=(TextView)findViewById(R.id.textview_sensorData);
 		pbSensorData=(ProgressBar)findViewById(R.id.progressBar_sensorData);
-		pbSensorData.setMax(200);
 		sm=(SensorManager)getSystemService(SENSOR_SERVICE);
-		sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),SensorManager.SENSOR_DELAY_NORMAL);
+		magnetsensor=sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+		pbSensorData.setMax((int)(magnetsensor.getMaximumRange()/3));
+		sm.registerListener(this,magnetsensor,SensorManager.SENSOR_DELAY_NORMAL);
 	}
 	@Override
 	protected void onPause() {
@@ -43,7 +45,7 @@ public class Display_SensorData_Activity extends Activity implements SensorEvent
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),SensorManager.SENSOR_DELAY_NORMAL);
+		sm.registerListener(this,magnetsensor,SensorManager.SENSOR_DELAY_NORMAL);
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
